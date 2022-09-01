@@ -1,6 +1,6 @@
 # Shout [POST]
 
-```/api/shout/```
+```/api/ranking/shout/```
 
 This endpoint shouts a specified message in the specified group.
 
@@ -8,21 +8,21 @@ This endpoint shouts a specified message in the specified group.
 
 | Body      | Description           | Type              |
 | ----------- | ---------------------|--------------- |
-| `key`       | Your paid gamekey | `STRING` | 
-| `group`    | The group which you want to look for the join request | `INTEGER` | 
-| `body`    | The message you want posted on the shout | `STRING` |
+| `groupId`    | The group which you want to shout in | `INTEGER` | 
+| `message`    | The message you want posted on the shout | `STRING` |
 
 ## Examples
 
 === "Javascript"
     ```javascript
     async function sendReqest() {
-        const response = await fetch('http://node.justbillyh.xyz:2012/api/shout', {
+        const response = await fetch('https://api.secureservice.app/api/ranking/shout', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'key': 'YOUR GAMEKEY HERE'
             },
-            body: JSON.stringify({ key: 'GAMEKEY', group: 'GROUP ID HERE', body: 'SHOUT MESSAGE HERE' })
+            body: JSON.stringify({ group: 'GROUP ID HERE', message: 'SHOUT MESSAGE HERE' })
         });
         return response.json();
     }
@@ -30,16 +30,17 @@ This endpoint shouts a specified message in the specified group.
 === "Luau"
     ```lua
     local HttpService = game:GetService("HttpService")
-    local URL = "http://node.justbillyh.xyz/api/shout"
+    local URL = "https://api.secureservice.app/api/ranking/shout"
     local function request()
 	local response = HttpService:RequestAsync(
 		{
 			Url = URL, 
 			Method = "POST",
 			Headers = {
-				["Content-Type"] = "application/json" 
+				["Content-Type"] = "application/json" ,
+                ["key"] = "YOUR GAMEKEY HERE"
 			},
-			Body = HttpService:JSONEncode({key = "GAMEKEY", group = "GROUP ID HERE", body: "SHOUT MESSAGE HERE"})
+			Body = HttpService:JSONEncode({group = "GROUP ID HERE", message: "SHOUT MESSAGE HERE"})
 		}
 	)
          if response.Success then
@@ -54,40 +55,4 @@ This endpoint shouts a specified message in the specified group.
     if not success then
         print("Http Request failed:", message)
     end
-    ```
-=== "Python"
-    ```py
-    import requests
-
-    r = requests.post('http://node.justbillyh.xyz:2012/api/shout', data={'key': 'GAMEKEY', 'group': 'GROUP ID HERE', body: 'SHOUT MESSAGE HERE'})
-    ```
-=== "Golang"
-    ```go
-    import (
-        "bytes"
-        "encoding/json"
-        "io/ioutil"
-        "log"
-        "net/http"
-    )
-
-    func main() {
-        postBody, _ := json.Marshal(map[string]string{
-            "key":  "GAMEKEY HERE",
-            "group": "GROUP ID HERE",
-            "body": "SHOUT MESSAGE HERE"
-        })
-        responseBody := bytes.NewBuffer(postBody)
-        resp, err := http.Post("http://node.justbillyh.xyz/api/shout", "application/json", responseBody)
-        if err != nil {
-            log.Fatalf("An Error Occured %v", err)
-        }
-        defer resp.Body.Close()
-        body, err := ioutil.ReadAll(resp.Body)
-        if err != nil {
-            log.Fatalln(err)
-        }
-        sb := string(body)
-        log.Printf(sb)
-    }
     ```

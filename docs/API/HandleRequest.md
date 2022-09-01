@@ -1,6 +1,6 @@
 # Handle Join Request [POST]
 
-```/api/handlerequest/```
+```/api/ranking/handlejoinrequest/```
 
 This endpoint accepts or denies the provided join request.
 
@@ -8,22 +8,22 @@ This endpoint accepts or denies the provided join request.
 
 | Body      | Description           | Type              |
 | ----------- | ---------------------|--------------- |
-| `key`       | Your paid gamekey | `STRING` | 
-| `user`       | The user who's join request you want to handle | `INTEGER` |
-| `group`    | The group which you want to look for the join request | `INTEGER` | 
-| `accept`    | Should the join request be accepted? | `BOOLEAN` |
+| `userId`       | The user who's join request you want to handle | `INTEGER` |
+| `groupId`    | The group which you want to look for the join request | `INTEGER` | 
+| `boolean`    | Should the join request be accepted? | `BOOLEAN` |
 
 ## Examples
 
 === "Javascript"
     ```javascript
     async function sendReqest() {
-        const response = await fetch('http://node.justbillyh.xyz:2012/api/handlerequest', {
+        const response = await fetch('https://api.secureservice.app/api/ranking/handlejoinrequest', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'key': 'YOUR GAMEKEY HERE'
             },
-            body: JSON.stringify({ key: 'GAMEKEY', user: 'USER ID HERE', group: 'GROUP ID HERE', accept: true/false })
+            body: JSON.stringify({ userId: 'USER ID HERE', groupId: 'GROUP ID HERE', boolean: true/false })
         });
         return response.json();
     }
@@ -31,16 +31,17 @@ This endpoint accepts or denies the provided join request.
 === "Luau"
     ```lua
     local HttpService = game:GetService("HttpService")
-    local URL = "http://node.justbillyh.xyz/api/handlerequest"
+    local URL = "https://api.secureservice.app/api/ranking/handlejoinrequest"
     local function request()
 	local response = HttpService:RequestAsync(
 		{
 			Url = URL, 
 			Method = "POST",
 			Headers = {
-				["Content-Type"] = "application/json" 
+				["Content-Type"] = "application/json",
+                ["key"] = "YOUR GAMEKEY HERE"
 			},
-			Body = HttpService:JSONEncode({key = "GAMEKEY", user = "USER ID HERE", group = "GROUP ID HERE", accept: true/false})
+			Body = HttpService:JSONEncode({userId = "USER ID HERE", groupId = "GROUP ID HERE", boolean: true/false})
 		}
 	)
          if response.Success then
@@ -55,41 +56,4 @@ This endpoint accepts or denies the provided join request.
     if not success then
         print("Http Request failed:", message)
     end
-    ```
-=== "Python"
-    ```py
-    import requests
-
-    r = requests.post('http://node.justbillyh.xyz:2012/api/handlejoin', data={'key': 'GAMEKEY', 'user': 'USER ID HERE', 'group': 'GROUP ID HERE', accept: true/false})
-    ```
-=== "Golang"
-    ```go
-    import (
-        "bytes"
-        "encoding/json"
-        "io/ioutil"
-        "log"
-        "net/http"
-    )
-
-    func main() {
-        postBody, _ := json.Marshal(map[string]string{
-            "key":  "GAMEKEY HERE",
-            "user": "USER ID HERE",
-            "group": "GROUP ID HERE",
-            "accept": "true/false"
-        })
-        responseBody := bytes.NewBuffer(postBody)
-        resp, err := http.Post("http://node.justbillyh.xyz/api/handlerequest", "application/json", responseBody)
-        if err != nil {
-            log.Fatalf("An Error Occured %v", err)
-        }
-        defer resp.Body.Close()
-        body, err := ioutil.ReadAll(resp.Body)
-        if err != nil {
-            log.Fatalln(err)
-        }
-        sb := string(body)
-        log.Printf(sb)
-    }
     ```
